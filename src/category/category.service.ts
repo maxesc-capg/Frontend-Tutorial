@@ -7,17 +7,22 @@ import { HttpClient } from '@angular/common/http';
 export class CategoryService {
   constructor() {}
   protected readonly http = inject(HttpClient);
+  private baseUrl = 'http://localhost:8080/category';
 
-    private baseUrl = 'http://localhost:8080/category';
   getCategories(): Observable<Category[]> {
     return this.http.get<Category[]>(this.baseUrl);
   }
 
-  saveCategory(category: Category): Observable<Category> {
-    return of(category);
-  }
+  
+saveCategory(category: Category): Observable<void> {
+  const hasId = category.id !== null && category.id !== undefined;
+  const url = hasId ? `${this.baseUrl}/${category.id}` : this.baseUrl;
 
-  deleteCategory(idCategory : number): Observable<any> {
-    return of(idCategory);
+  return this.http.put<void>(url, category);
+}
+
+
+  deleteCategory(idCategory: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/${idCategory}`);
   }
 }
