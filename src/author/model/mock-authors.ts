@@ -17,4 +17,4 @@ export const AUTHOR_DATA: PaginatedData<Author> = {
         sort: [{ property: 'id', direction: 'ASC' }],
     },
     totalElements: 7,
-};
+}

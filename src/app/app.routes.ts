@@ -8,5 +8,5 @@ export const routes: Routes = [
             .then(m => m.CategoryListComponent)
     },
     { path: 'authors', loadComponent: () => import('../author/author-list/author-list.page').then(m => m.AuthorListComponent)},
-    { path: 'games', loadComponent: () => import('../game/game-list/game-list.page').then(m => m.GameListPage)}
+    { path: 'games', loadComponent: () => import('../game/game-list/game-list.page').then(m => m.GameListComponent)}
 ];
