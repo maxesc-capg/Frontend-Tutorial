@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { CustomerService } from '../customer.service';
 @Component({
   selector: 'app-customer-list',
   imports: [MatButtonModule,
@@ -18,10 +19,14 @@ export class CustomerListPage implements OnInit {
   dataSource = new MatTableDataSource<Customer>();
   displayedColumns: string[] = ['id', 'name', 'action'];
 
-  constructor() {}
+  constructor(
+    private customerService: CustomerService
+  ) {}
 
   ngOnInit(): void {
-    
+    this.customerService.getCategories().subscribe(
+      Customers => this.dataSource.data = Customers
+    );
   }
 
 }
