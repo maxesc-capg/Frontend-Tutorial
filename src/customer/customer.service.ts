@@ -9,7 +9,19 @@ import { CUSTOMER_DATA } from './model/mock-customers';
 export class CustomerService {
   constructor() { }
 
-  getCategories(): Observable<Customer[]> {
+  getCustomers(): Observable<Customer[]> {
     return of(CUSTOMER_DATA);
+  }
+
+  saveCustomers(customer: Customer): Observable<Customer> {
+    return of(customer);
+  }
+
+  deleteCustomers(idCustomer: number): Observable<any> {
+    return of(undefined)
+  }
+
+  checkNameExists(name: string): Observable<Customer[]> {
+    return this.getCustomers();
   }
 }

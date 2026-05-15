@@ -1,11 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Customer } from '../model/Customer';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
 import { CustomerService } from '../customer.service';
+import { CustomerEdit } from '../customer-edit/customer-edit';
 @Component({
   selector: 'app-customer-list',
   imports: [MatButtonModule,
@@ -20,13 +22,29 @@ export class CustomerListPage implements OnInit {
   displayedColumns: string[] = ['id', 'name', 'action'];
 
   constructor(
-    private customerService: CustomerService
   ) {}
 
-  ngOnInit(): void {
-    this.customerService.getCategories().subscribe(
+  protected readonly customerService = inject(CustomerService);
+  protected readonly dialog = inject(MatDialog);
+  
+  createCustomer() {
+    const dialogRef = this.dialog.open(CustomerEdit, {
+      data: {}
+    })
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) return;
+      this.loadData();
+    })
+  }
+
+  loadData(): void {
+    this.customerService.getCustomers().subscribe(
       Customers => this.dataSource.data = Customers
     );
+  }
+
+  ngOnInit(): void {
+    this.loadData()
   }
 
 }
