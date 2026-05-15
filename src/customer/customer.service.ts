@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Customer } from './model/Customer'
+import { CUSTOMER_DATA } from './model/mock-customers';
 
 @Injectable({
   providedIn: 'root',
@@ -9,6 +10,6 @@ export class CustomerService {
   constructor() { }
 
   getCategories(): Observable<Customer[]> {
-    return new Observable();
+    return of(CUSTOMER_DATA);
   }
 }
