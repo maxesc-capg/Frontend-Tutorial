@@ -18,6 +18,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 export class CustomerEdit implements OnInit {
   protected readonly dialogRef = inject(MatDialogRef<CustomerEdit>);
   protected readonly customerService = inject(CustomerService);
+  protected readonly data = inject(MAT_DIALOG_DATA) as {customer: Customer};
+
   protected readonly snackBar = inject(MatSnackBar);
 
   protected readonly id = signal<number | null>(null);
@@ -25,12 +27,12 @@ export class CustomerEdit implements OnInit {
 
 
   ngOnInit(): void {
-    this.loadFormData();
+    this.loadFormData(this.data.customer ?? null);
   }
 
-  loadFormData(): void {
-    this.id.set(null);
-    this.name.set(null);
+  loadFormData(initialData: Customer | null): void {
+    this.id.set(initialData?.id ?? null);
+    this.name.set(initialData?.name ?? null);
   }
 
   onSave() {

@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { CustomerService } from '../customer.service';
 import { CustomerEdit } from '../customer-edit/customer-edit';
+import { CategoryEditComponent } from '../../category/category-edit/category-edit';
 @Component({
   selector: 'app-customer-list',
   imports: [MatButtonModule,
@@ -41,6 +42,17 @@ export class CustomerListPage implements OnInit {
     this.customerService.getCustomers().subscribe(
       Customers => this.dataSource.data = Customers
     );
+  }
+
+  editCustomer(customer: Customer) {
+    const dialogRef = this.dialog.open(CategoryEditComponent, {
+      data: { customer }
+    })
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(!result) return;
+      this.loadData()
+    })
   }
 
   ngOnInit(): void {
