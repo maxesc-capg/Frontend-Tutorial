@@ -9,6 +9,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { CustomerService } from '../customer.service';
 import { CustomerEdit } from '../customer-edit/customer-edit';
 import { CategoryEditComponent } from '../../category/category-edit/category-edit';
+import { DialogConfirmationComponent } from '../../core/dialog-confirmation/dialog-confirmation';
+
 @Component({
   selector: 'app-customer-list',
   imports: [MatButtonModule,
@@ -52,6 +54,21 @@ export class CustomerListPage implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if(!result) return;
       this.loadData()
+    })
+  }
+
+  deleteCustomer(customer: Customer){
+    const dialogRef = this.dialog.open(DialogConfirmationComponent, {
+      data: {
+        title: "Eliminar categoría", description: "Atención! Si borra el cliente, se perderán sus datos. <br> ¿Desea eliminar el cliente?"
+      }
+    })
+    dialogRef.afterClosed().subscribe(result=> {
+      if (result) {
+        this.customerService.deleteCustomers(customer.id).subscribe(result => {
+          this.loadData();
+        })
+      }
     })
   }
 
