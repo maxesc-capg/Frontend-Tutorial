@@ -8,7 +8,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { CustomerService } from '../customer.service';
 import { CustomerEdit } from '../customer-edit/customer-edit';
-import { CategoryEditComponent } from '../../category/category-edit/category-edit';
 import { DialogConfirmationComponent } from '../../core/dialog-confirmation/dialog-confirmation';
 
 @Component({
@@ -47,7 +46,7 @@ export class CustomerListPage implements OnInit {
   }
 
   editCustomer(customer: Customer) {
-    const dialogRef = this.dialog.open(CategoryEditComponent, {
+    const dialogRef = this.dialog.open(CustomerEdit, {
       data: { customer }
     })
 
@@ -60,7 +59,7 @@ export class CustomerListPage implements OnInit {
   deleteCustomer(customer: Customer){
     const dialogRef = this.dialog.open(DialogConfirmationComponent, {
       data: {
-        title: "Eliminar categoría", description: "Atención! Si borra el cliente, se perderán sus datos. <br> ¿Desea eliminar el cliente?"
+        title: "Eliminar cliente", description: "¡Atención! Si borra el cliente, se perderán sus datos. <br> ¿Desea eliminar el cliente?"
       }
     })
     dialogRef.afterClosed().subscribe(result=> {
