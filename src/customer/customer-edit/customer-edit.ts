@@ -11,20 +11,26 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-customer-edit',
-  imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatSnackBarModule],
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatSnackBarModule,
+  ],
   templateUrl: './customer-edit.html',
   styleUrl: './customer-edit.scss',
 })
 export class CustomerEdit implements OnInit {
   protected readonly dialogRef = inject(MatDialogRef<CustomerEdit>);
   protected readonly customerService = inject(CustomerService);
-  protected readonly data = inject(MAT_DIALOG_DATA) as {customer: Customer};
+  protected readonly data = inject(MAT_DIALOG_DATA) as { customer: Customer };
 
   protected readonly snackBar = inject(MatSnackBar);
 
   protected readonly id = signal<number | null>(null);
   protected readonly name = signal<string | null>(null);
-
 
   ngOnInit(): void {
     this.loadFormData(this.data.customer ?? null);
@@ -44,25 +50,22 @@ export class CustomerEdit implements OnInit {
     }
 
     /* Verificamos si el nombre ya existe */
-    this.customerService.getCustomers().subscribe(customers => {
-      const exists = customers.some(
-        c => c.name.toLowerCase() === name.toLowerCase()
-      )
+    this.customerService.checkNameExists(name).subscribe((customers) => {
+      const exists = customers.some((c) => c.name.toLowerCase() === name.toLowerCase());
 
       if (exists) {
         this.snackBar.open('Ya existe un cliente con ese nombre', 'Cerrar', {
           duration: 3000,
           horizontalPosition: 'center',
-          verticalPosition: 'bottom'
+          verticalPosition: 'bottom',
         });
-        return;
+      } else {
+        const customer = { id, name } as Customer;
+        this.customerService.saveCustomers(customer).subscribe(() => {
+          this.dialogRef.close(true);
+        });
       }
-    })
-
-    const customer = {id, name} as Customer;
-    this.customerService.saveCustomers(customer).subscribe(() => {
-      this.dialogRef.close(true);
-    })
+    });
   }
 
   onClose() {
