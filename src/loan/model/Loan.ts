@@ -3,8 +3,8 @@ import { Customer } from "../../customer/model/Customer";
 
 export interface Loan {
     id: number;
-    customer: Customer;
     game: Game;
+    customer: Customer;
     loanStart: Date;
     loanEnd: Date;
 }
